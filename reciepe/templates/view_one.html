@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ data.reciepe_name }} - CookWithMe{% endblock %}
+
+{% block content %}
+<div class="card">
+    <!-- Back Navigation -->
+    <div style="margin-bottom: 2rem;">
+        <a href="{% url 'view_rec' %}" class="btn btn-outline" style="margin-right: 1rem;">
+            <i class="fas fa-arrow-left"></i> Back to Recipes
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-outline">
+            <i class="fas fa-plus"></i> Add New Recipe
+        </a>
+    </div>
+    
+    <!-- Recipe Details -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <!-- Left Column: Image -->
+        <div>
+            {% if data.image %}
+                <img src="{{ data.image.url }}" alt="{{ data.reciepe_name }}" 
+                     style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            {% else %}
+                <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+                          height: 400px; border-radius: 12px; display: flex; align-items: center; 
+                          justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <i class="fas fa-utensils" style="font-size: 5rem; color: #7f8c8d;"></i>
+                </div>
+            {% endif %}
+            
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                <a href="{% url 'update_rec' data.reciepe_id %}" class="btn btn-primary" style="flex: 1;">
+                    <i class="fas fa-edit"></i> Edit Recipe
+                </a>
+                <a href="{% url 'delete_rec' data.reciepe_id %}" class="btn btn-danger" style="flex: 1;">
+                    <i class="fas fa-trash"></i> Delete Recipe
+                </a>
+            </div>
+        </div>
+        
+        <!-- Right Column: Details -->
+        <div>
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">{{ data.reciepe_name }}</h1>
+            
+            <!-- Rating -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                <div class="stars">
+                    {% for i in "12345" %}
+                        <span class="star {% if forloop.counter <= data.rating %}filled{% endif %}" style="font-size: 1.5rem;">
+                            <i class="fas fa-star"></i>
+                        </span>
+                    {% endfor %}
+                </div>
+                <span style="font-size: 1.2rem; font-weight: 600; color: #2c3e50;">{{ data.rating }}/5 Stars</span>
+            </div>
+            
+            <!-- Description -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: #2c3e50;">
+                    <i class="fas fa-file-alt"></i> Description
+                </h3>
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3498db;">
+                    <p style="line-height: 1.8; color: #444;">{{ data.reciepe_description }}</p>
+                </div>
+            </div>
+            
+            <!-- Recipe Info -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #eaeaea;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-clock" style="color: #3498db;"></i>
+                        <span style="font-weight: 500;">Prep Time</span>
+                    </div>
+                    <p style="margin-top: 0.5rem; color: #666;">30 mins</p>
+                </div>
+                
+                <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #eaeaea;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-fire" style="color: #e74c3c;"></i>
+                        <span style="font-weight: 500;">Difficulty</span>
+                    </div>
+                    <p style="margin-top: 0.5rem; color: #666;">Intermediate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <h3 style="margin-bottom: 1rem;"><i class="fas fa-bolt"></i> Quick Actions</h3>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{% url 'home' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Another Recipe
+        </a>
+        <a href="{% url 'view_rec' %}" class="btn btn-primary">
+            <i class="fas fa-list"></i> View All Recipes
+        </a>
+        <button onclick="window.print()" class="btn btn-outline">
+            <i class="fas fa-print"></i> Print Recipe
+        </button>
+    </div>
+</div>
+{% endblock %}
